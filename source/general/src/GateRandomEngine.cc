@@ -21,6 +21,8 @@
 #include "TRandom.h"
 #endif
 
+#include "compat.h"
+
 GateRandomEngine* GateRandomEngine::instance = 0;
 
 ///////////////////

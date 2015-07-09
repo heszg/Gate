@@ -763,7 +763,7 @@ void GateToRoot::RecordEndOfEvent(const G4Event* event)
       if (dzg1 > dzg2) {dev = rad2deg(acos(-dev));}
       else {dev = rad2deg(acos(dev)) - 180;}
 
-      if (std::isnan(dev) ) dev = 0.;
+      if (isnan(dev) ) dev = 0.;
 
       // G4cout<< " dev = " << dev << Gateendl;
 

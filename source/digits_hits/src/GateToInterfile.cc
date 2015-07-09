@@ -79,6 +79,8 @@
 #include "GateThresholder.hh"
 #include "GateUpholder.hh"
 
+#include "compat.h"
+
 //#include "GateVObjectCreator.hh"
 
 //#include "GatePlacementMove.hh"

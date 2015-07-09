@@ -14,7 +14,11 @@
 
 #include <limits>
 #include <fcntl.h>
+#ifdef _MSC_BUILD
+#include <msunistd.h>
+#else
 #include <unistd.h>
+#endif
 
 #include "GateToBinaryMessenger.hh"
 #include "GateOutputMgr.hh"

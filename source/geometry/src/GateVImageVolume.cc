@@ -26,6 +26,8 @@
 #include <G4TransportationManager.hh>
 #include "globals.hh"
 
+#include "compat.h"
+
 typedef unsigned int uint;
 
 //--------------------------------------------------------------------

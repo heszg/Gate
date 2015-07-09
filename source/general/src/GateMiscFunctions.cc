@@ -24,9 +24,16 @@ See GATE/LICENSE.txt for further details
 #include "GateRunManager.hh"
 #include "G4Run.hh"
 
-#include <sys/types.h> 
-#include <sys/file.h>
-#include <unistd.h>
+#ifdef _MSC_BUILD
+#	include <ctype.h>
+#	include <msunistd.h>
+#	include "compat.h"
+#else
+#	include <sys/types.h> 
+#	include <sys/file.h>
+#	include <unistd.h>
+#endif
+
 #include <fcntl.h>
 
 #include "G4PhysicalConstants.hh"
