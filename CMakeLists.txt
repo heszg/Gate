@@ -77,15 +77,27 @@ OPTION(GATE_USE_GPU "Gate use GPU (voxelized src and tracking), need CUDA " OFF)
 #=========================================================
 # ROOT
 IF(GATE_USE_ROOT)
+	SET(ROOT_CONFIG_DEBUG 10)
+	SET(ROOT_FIND_COMPONENTS Tree Rint)
+IF (WIN32) 
+# CONFIG: use ROOTConfig.cmake instead of FindROOT.cmake
+  FIND_PACKAGE(ROOT REQUIRED CONFIG)
+ELSE()
   FIND_PACKAGE(ROOT REQUIRED)
+ENDIF()
+  
+  IF(ROOT_INCLUDE_DIRS)
+    set(ROOT_INCLUDE_DIR ${ROOT_INCLUDE_DIRS})
+  ENDIF()
+  
   INCLUDE_DIRECTORIES(${ROOT_INCLUDE_DIR})
   SET(LINK_DIRECTORIES ${ROOT_LIBRARY_DIR})
-  #MESSAGE("Found Root in ${ROOT_INCLUDE_DIR} ${ROOT_LIBRARY_DIR} ${ROOT_LIBRARIES}")
-  #IF(ROOT_INCLUDE_DIR)
-    #MESSAGE("Your current Root version is ${ROOT_VERSION}")
-  #ELSE()
-  IF(NOT ROOT_INCLUDE_DIR)
+  MESSAGE("Found Root in ${ROOT_INCLUDE_DIR} ${ROOT_LIBRARY_DIR} ${ROOT_LIBRARIES} Tree=${ROOT_TREE_LIBRARY}")
+  IF(ROOT_INCLUDE_DIR)
+    MESSAGE("Your current Root version is ${ROOT_VERSION}")
+  ELSE()
     MESSAGE("Root not found! Please install Root and make it available in PATH")
+    MESSAGE("Note for Windows: Root has a ROOTConfig.cmake, you should add it's path to CMAKE_MODULE_PATH or set ROOT_DIR.")
   ENDIF()
 ENDIF()
 
@@ -172,7 +184,7 @@ FILE(GLOB sources
   ${PROJECT_SOURCE_DIR}/source/geometry/src/*.cc
   ${PROJECT_SOURCE_DIR}/source/digits_hits/src/*.cc
   ${PROJECT_SOURCE_DIR}/source/physics/src/*.cc
-  ${PROJECT_SOURCE_DIR}/source/general/src/*.cc
+  ${PROJECT_SOURCE_DIR}/source/general/src/Gate*.cc
   ${PROJECT_SOURCE_DIR}/source/externals/clhep/src/CLHEP/Matrix/*.cc
   ${PROJECT_SOURCE_DIR}/source/externals/clhep/src/CLHEP/RandomObjects/*.cc
   ${PROJECT_SOURCE_DIR}/source/gpu/src/GateGPUManager.cu)
@@ -182,9 +194,14 @@ FILE(GLOB headers
   ${PROJECT_SOURCE_DIR}/source/geometry/include/*.hh
   ${PROJECT_SOURCE_DIR}/source/physics/include/*.hh
   ${PROJECT_SOURCE_DIR}/source/digits_hits/include/*.hh
-  ${PROJECT_SOURCE_DIR}/source/general/include/*.hh
+  ${PROJECT_SOURCE_DIR}/source/general/include/Gate*.hh
   ${PROJECT_SOURCE_DIR}/source/externals/clhep/include/*.hh
   ${PROJECT_SOURCE_DIR}/source/gpu/include/*.hh)
+
+IF (WIN32) 
+  SET( sources ${sources} ${PROJECT_SOURCE_DIR}/source/general/src/msgettimeofday.cc  ${PROJECT_SOURCE_DIR}/source/general/src/msgetopt.cc )
+  SET( headers ${headers} ${PROJECT_SOURCE_DIR}/source/general/include/msgettimeofday.h ${PROJECT_SOURCE_DIR}/source/general/include/msgetopt.h )
+ENDIF()
 
 #=========================================================
 # Add the executable, and link it to the Geant4 libraries
@@ -195,7 +212,19 @@ ELSE(GATE_USE_GPU AND CUDA_FOUND)
   ADD_EXECUTABLE(Gate Gate.cc ${sources} ${headers})
 ENDIF(GATE_USE_GPU AND CUDA_FOUND)
 
-TARGET_LINK_LIBRARIES(Gate ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${CLHEP_LIBRARIES} ${LIBXML2_LIBRARIES} ${LMF_LIBRARY} ${ECAT7_LIBRARY} MetaIO itkzlib pthread)
+IF (WIN32) 
+# !TODO! search for pthread
+	SET(PTHREADS_DIR "T:/PThreads-2.8.0/" CACHE FILEPATH "Pthread's directory")
+	
+    INCLUDE_DIRECTORIES(${PTHREADS_DIR})
+	FIND_LIBRARY(PTHREADS_LIBRARY pthread "${PTHREADS_DIR}/lib")
+ELSE(WIN32)
+	FIND_LIBRARY(PTHREADS_LIBRARY pthread)
+ENDIF(WIN32)
+
+
+
+TARGET_LINK_LIBRARIES(Gate ${PTHREADS_LIBRARY} ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${CLHEP_LIBRARIES} ${LIBXML2_LIBRARIES} ${LMF_LIBRARY} ${ECAT7_LIBRARY} MetaIO itkzlib)
 
 #=========================================================
 # included ITK to read/write mhd image file format
@@ -224,5 +253,10 @@ ENDIF(GATE_DOWNLOAD_EXAMPLES_DATA)
 #=========================================================
 # We remove the warning option "shadow", because there are tons of
 # such warning related to clhep/g4 system of units.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow")
+IF (NOT WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow")
+ENDIF()
 #=========================================================
+if (WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_USE_MATH_DEFINES -DNOMINMAX ")
+ENDIF()

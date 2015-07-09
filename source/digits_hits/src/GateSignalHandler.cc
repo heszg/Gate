@@ -18,6 +18,20 @@ See GATE/LICENSE.txt for further details
 // Install the signal handlers
 G4int GateSignalHandler::Install()
 {
+#ifdef _MSC_BUILD
+  if (signal(SIGTERM,QuitSignalHandler) == SIG_ERR) {
+    G4cerr << G4endl << "Warning! Could not install handler for CTRL-\\ (SIGTERM)!" << G4endl << G4endl;
+    return -1;
+  }
+  if (signal(SIGABRT,QuitSignalHandler) == SIG_ERR) {
+    G4cerr << G4endl << "Warning! Could not install handler for CTRL-\\ (SIGABRT)!" << G4endl << G4endl;
+    return -1;
+  }
+  if (signal(SIGINT,QuitSignalHandler) == SIG_ERR) {
+    G4cerr << G4endl << "Warning! Could not install handler for CTRL-\\ (SIGINT)!" << G4endl << G4endl;
+    return -1;
+  }
+#else
   // Set the SIGQUIT signal handler to QuitSignalHandler
   if (signal(SIGQUIT,QuitSignalHandler) == SIG_ERR) {
     G4cerr << G4endl << "Warning! Could not install handler for CTRL-\\ (SIGQUIT)!" << G4endl << G4endl;
@@ -41,11 +55,15 @@ G4int GateSignalHandler::Install()
     return -1;
   }
 #endif
+#endif
   return 0;
 }
 
 
 void GateSignalHandler::IgnoreSignalHandler(int sig) {
+#ifdef _MSC_BUILD
+    G4cerr << sig << G4endl;
+#else
   G4cerr << "ignoring signal ";
   switch (sig) {
   case SIGXCPU:
@@ -58,6 +76,7 @@ void GateSignalHandler::IgnoreSignalHandler(int sig) {
     G4cerr << sig << G4endl;
     break;
   }
+#endif
 }
 
 // Handles the signal SIGQUIT (CTRL-\).
@@ -69,7 +88,13 @@ void GateSignalHandler::QuitSignalHandler(int sig)
   G4cerr << G4endl << "Received signal: " ;
   switch (sig)
   {
+#ifdef _MSC_BUILD
+  case SIGTERM:
+  case SIGABRT:
+  case SIGINT:
+#else
     case SIGQUIT:
+#endif
       G4cerr << "Quit (CTRL-\\)" << G4endl;
       break;
     default:

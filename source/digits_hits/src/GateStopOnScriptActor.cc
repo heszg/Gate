@@ -19,7 +19,7 @@ See GATE/LICENSE.txt for further details
 #include "GateUserActions.hh"
 #include "GateMiscFunctions.hh"
 #include <signal.h>
-#include <sys/wait.h>
+// #include <sys/wait.h>
 
 //-----------------------------------------------------------------------------
 /// Constructors (Prototype)
@@ -59,6 +59,12 @@ void GateStopOnScriptActor::Construct()
 /// Save data
 void GateStopOnScriptActor::SaveData()
 {
+#ifdef _MSC_BUILD
+// !TODO! fix this function on Windows
+	GateMessage("Actor", 0, "GateStopOnScriptActor -- is not defined " << G4endl);
+
+    exit(-1);
+#else
   GateVActor::SaveData();
   std::string cmd("bash ");
   cmd += mSaveFilename;
@@ -161,7 +167,7 @@ void GateStopOnScriptActor::SaveData()
     GateMessage("Actor", 0, "GateStopOnScriptActor -- return is 1 ; completed. I stop now." << G4endl);
     exit(0);
   }
-
+#endif
 }
 //-----------------------------------------------------------------------------
 

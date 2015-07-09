@@ -36,6 +36,10 @@
 #include "G4THitsMap.hh"
 #include "G4TouchableHistory.hh"
 
+#ifdef _MSC_BUILD
+#include <Winsock2.h>	// timeval
+#endif
+
 class GateVActor :
   public GateNamedObject,
   public G4VPrimitiveScorer

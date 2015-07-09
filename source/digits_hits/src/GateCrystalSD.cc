@@ -36,7 +36,8 @@ const G4String GateCrystalSD::theCrystalCollectionName = "crystalCollection";
 //------------------------------------------------------------------------------
 // Constructor
 GateCrystalSD::GateCrystalSD(const G4String& name)
-:G4VSensitiveDetector(name),m_system(0)
+:G4VSensitiveDetector(name),m_system(0),m_systemList(0)
+
 {
   collectionName.insert(theCrystalCollectionName);
 }

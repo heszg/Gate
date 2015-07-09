@@ -24,6 +24,8 @@
 #include "GateMiscFunctions.hh"
 #include "GateMachine.hh"
 
+#include "compat.h"
+
 //-----------------------------------------------------------------------------
 class GateInterfileHeader
 {

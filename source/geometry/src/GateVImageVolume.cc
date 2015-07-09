@@ -25,6 +25,8 @@
 #include "GateHounsfieldMaterialTable.hh"
 #include <G4TransportationManager.hh>
 
+#include "compat.h"
+
 typedef unsigned int uint;
 
 //--------------------------------------------------------------------

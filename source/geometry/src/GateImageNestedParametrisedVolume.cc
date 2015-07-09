@@ -26,6 +26,9 @@
 #include "GateMiscFunctions.hh"
 #include "GateImageBox.hh"
 
+#include "compat.h"
+#include <cmath>
+
 ///---------------------------------------------------------------------------
 /// Constructor with :
 /// the path to the volume to create (for commands)

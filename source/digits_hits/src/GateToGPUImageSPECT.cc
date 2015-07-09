@@ -6,7 +6,7 @@
    See GATE/LICENSE.txt for further details
 ----------------------*/
 #include <cmath>
-#include "pthread.h"
+#include <pthread.h>
 #include <vector>
 #include "G4RunManager.hh"
 #include "GateConfiguration.h"
@@ -28,7 +28,12 @@
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 #include <cstddef>
+#ifdef _MSC_BUILD
+#	include <time.h>
+#	include "msgettimeofday.h"
+#else
 #include <sys/time.h>
+#endif
 
 #define PI ( 4 * ::atan( 1 ) )
 
@@ -202,6 +207,7 @@ static void* cpuSPECT( void *args )
 
 	delete[] particleThread;
 	pthread_exit( NULL );
+	return NULL;
 }
 
 void GateToGPUImageSPECT::SetRootHitFlag( G4bool flag )

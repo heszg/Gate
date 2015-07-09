@@ -19,7 +19,12 @@ This file is part of libvol.
 */
 #include "GateDMapVol.h"
 
-#include <unistd.h>
+#ifdef _MSC_BUILD
+#	include "msunistd.h"
+#	include "compat.h"
+#else
+#	include <unistd.h>
+#endif
 #include <sys/types.h>
 #include <sys/types.h>
 #include <fcntl.h>

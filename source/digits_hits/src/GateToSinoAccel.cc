@@ -22,6 +22,8 @@ See GATE/LICENSE.txt for further details
 #include "GateVSystem.hh"
 #include "GateApplicationMgr.hh"
 
+#include "compat.h"
+
 // #include "GatePlacementMove.hh"
 
 // Public constructor (creates an empty, uninitialised, project set)

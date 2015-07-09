@@ -57,7 +57,7 @@
  * @param b Long number with INFTY
  * @return The sum of a and b handling INFTY
  **************************************************/
-INLINE long sum(long a, long b)
+INLINE long INLsum(long a, long b)
 {
   if ((a==INFTY) || (b==INFTY))
     return INFTY;
@@ -72,7 +72,7 @@ INLINE long sum(long a, long b)
  * @param b Long number with INFTY
  * @return The product of a and b handling INFTY
  **************************************************/
-INLINE long prod(long a, long b)
+INLINE long INLprod(long a, long b)
 {
   if ((a==INFTY) || (b==INFTY))
     return INFTY;
@@ -85,7 +85,7 @@ INLINE long prod(long a, long b)
  * @param a Long number with INFTY
  * @return The opposite of a  handling INFTY
  **************************************************/
- INLINE  long opp (long a) {
+ INLINE  long INLopp (long a) {
   if (a == INFTY) {
     return INFTY;
   }
@@ -101,7 +101,7 @@ INLINE long prod(long a, long b)
  * @param divis Long number with INFTY
  * @return The division (integer) of divid out of divis handling INFTY
  **************************************************/
- INLINE  long intdivint (long divid, long divis) {
+ INLINE  long INLintdivint (long divid, long divis) {
   if (divis == 0)
     return  INFTY;
   if (divid == INFTY)
@@ -123,7 +123,7 @@ INLINE long prod(long a, long b)
  **************************************************/
 INLINE long F(int x, int i, long gi2)
 {
-    return sum((x-i)*(x-i), gi2);
+    return INLsum((x-i)*(x-i), gi2);
 }
 
 /**
@@ -137,7 +137,7 @@ INLINE long F(int x, int i, long gi2)
  **************************************************/
 INLINE long Sep(int i, int u, long gi2, long gu2)
 {
-    return intdivint(sum( sum((long) (u*u - i*i),gu2), opp(gi2) ), 2*(u-i));
+    return INLintdivint(INLsum( INLsum((long) (u*u - i*i),gu2), INLopp(gi2) ), 2*(u-i));
 }
 /////////
 
@@ -152,7 +152,7 @@ INLINE long Sep(int i, int u, long gi2, long gu2)
  **************************************************/
 INLINE long F_inv(int x, int i, long gi2)
 {
-    return sum(-(x-i)*(x-i), gi2);
+    return INLsum(-(x-i)*(x-i), gi2);
 }
 
 /**
@@ -166,10 +166,10 @@ INLINE long F_inv(int x, int i, long gi2)
  **************************************************/
 INLINE long Sep_inv(int u, int v, long gu2, long gv2)
 {
-    return intdivint(sum(
-                         sum((long) (u*u - v*v),
+    return INLintdivint(INLsum(
+                         INLsum((long) (u*u - v*v),
                              gv2),
-                         opp(gu2) ),
+                         INLopp(gu2) ),
                      2*(u-v));
 }
 /////////

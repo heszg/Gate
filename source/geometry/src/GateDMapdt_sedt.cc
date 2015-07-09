@@ -64,9 +64,9 @@ inline void phaseSaitoX_1D(const Vol &V, Longvol &sdt_x, const bool isMultiregio
   //TORIC Case We look for a min index
   index = 0;
 
-  if (not(isMultiregion))
+  if (!(isMultiregion))
     {
-      while ((int)index < V.sizeX() and (V(index,y,z) != 0))
+      while ((int)index < V.sizeX() && (V(index,y,z) != 0))
         {
 	  sdt_x(index,y,z)=INFTY;
 	  index++;
@@ -88,17 +88,17 @@ inline void phaseSaitoX_1D(const Vol &V, Longvol &sdt_x, const bool isMultiregio
 
       for (unsigned int x = 1; x < bound; x++)
         {
-	  if (not (isMultiregion))
+	  if (! (isMultiregion))
             {
 	      if (V(cpt,y,z) == 0)
 		sdt_x(cpt,y,z) = 0;
 	      else
-		sdt_x(cpt,y,z) = sum(1, sdt_x(cpt2,y,z));
+		sdt_x(cpt,y,z) = INLsum(1, sdt_x(cpt2,y,z));
             }
 	  else   //Multi-region case
             {
 	      if (V(cpt2,y,z) == V(cpt,y,z))
-		sdt_x(cpt,y,z)= sum(1, sdt_x(cpt2,y,z));
+		sdt_x(cpt,y,z)= INLsum(1, sdt_x(cpt2,y,z));
 	      else
                 {
 		  sdt_x(cpt,y,z) = 0;
@@ -114,14 +114,14 @@ inline void phaseSaitoX_1D(const Vol &V, Longvol &sdt_x, const bool isMultiregio
 	sdt_x(V.sizeX()-1,y,z) = 0;
 
       //Backward scan
-      if (not(isToric))
+      if (!(isToric))
 	cpt = V.sizeX()-2;
       else
 	cpt = (index + V.sizeX()-1) % V.sizeX();
       for (int x = V.sizeX() -2; x >= 0; x--)
         {
 	  if (sdt_x((cpt+1)%V.sizeX(),y,z) < sdt_x(cpt,y,z))
-	    sdt_x(cpt,y,z)=sum(1, sdt_x((cpt+1)%V.sizeX(),y,z));
+	    sdt_x(cpt,y,z)=INLsum(1, sdt_x((cpt+1)%V.sizeX(),y,z));
 	  cpt = (cpt + V.sizeX() -1 ) % V.sizeX();
         }
     }
@@ -270,7 +270,7 @@ inline void phaseSaitoY_1D(const Vol &V, Longvol &sdt_x, Longvol &sdt_xy,
   //Reencoding
   for (unsigned int id=0; id < (unsigned int)sdt_x.sizeY(); id++)
     {
-      sdt_temp[id] = prod(sdt_x(x,(id+index) %sdt_x.sizeY(),z),
+      sdt_temp[id] = INLprod(sdt_x(x,(id+index) %sdt_x.sizeY(),z),
 			  sdt_x(x,(id+index) %sdt_x.sizeY(),z));
       //cout <<prod(sdt_x(x,id,z), sdt_x(x,id,z))<<" ";
     }

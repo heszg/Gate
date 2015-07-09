@@ -160,6 +160,8 @@ void GateRunManager::InitGeometryOnly()
     if(regionName!="DefaultRegionForTheWorld"){
       RegionStore->DeRegister((*pi));
       GateMessage("Cuts", 5, "Region "<<regionName<<" deleted."<< G4endl);
+// reset the pointer after deleting
+//      pi = RegionStore->begin();
     }
     else  ++pi;
   }

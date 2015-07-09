@@ -17,7 +17,13 @@
 
 #include "GateCrossSectionProductionActor.hh"
 #include "GateMiscFunctions.hh"
+#ifdef _MSC_BUILD
+#include <time.h>
+#include "msgettimeofday.h"
+//#include <Winsock2.h>	// timeval
+#else
 #include <sys/time.h>
+#endif
 //-----------------------------------------------------------------------------
 GateCrossSectionProductionActor::GateCrossSectionProductionActor(G4String name, G4int depth):
   GateVImageActor(name,depth) {

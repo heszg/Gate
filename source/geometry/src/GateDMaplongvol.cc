@@ -19,7 +19,12 @@ This file is part of liblongvol.
 */
 #include "GateDMaplongvol.h"
 
-#include <unistd.h>
+#ifdef _MSC_BUILD
+#	include "msunistd.h"
+#	define snprintf _snprintf
+#else
+#	include <unistd.h>
+#endif
 #include <sys/types.h>
 #include <sys/types.h>
 #include <fcntl.h>

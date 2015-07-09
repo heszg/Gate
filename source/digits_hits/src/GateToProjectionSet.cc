@@ -94,6 +94,8 @@
 
 #include "GateToOpticalRaw.hh" // v. cuplov
 
+#include "compat.h"
+
 /*
  *  GateToInterfile is used to write as an output file the result of the GateToProjectionSet module.
  *  This 2 classes are strickly working together.

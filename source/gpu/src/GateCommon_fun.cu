@@ -1,14 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
+#define _USE_MATH_DEFINES 1
 #include <math.h>
 #include <float.h>
+
+#ifdef _MSC_BUILD
+#	include <Winsock2.h>
+#	include <time.h>
+#	include "gettimeofday.h"
+#else
+#	include <time.h>
+#endif
+
 
 /***********************************************************
  * Vars
  ***********************************************************/
-__constant__ const float gpu_pi = 3.14159265358979323846;
-__constant__ const float gpu_twopi = 2*gpu_pi;
+//__constant__ const float gpu_pi = 3.14159265358979323846;
+//__constant__ const float gpu_twopi = 2*gpu_pi;
+#define gpu_pi 3.14159265358979323846f
+#define gpu_twopi (2*3.14159265358979323846f)
 
 /***********************************************************
  * Utils Host
