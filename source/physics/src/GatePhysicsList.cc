@@ -37,10 +37,12 @@
 #include "G4EmStandardPhysics_option1.hh"
 #include "G4EmStandardPhysics_option2.hh"
 #include "G4EmStandardPhysics_option3.hh"
+#include "G4EmStandardPhysics_option4.hh"
 #include "G4EmLivermorePolarizedPhysics.hh"
 #include "G4EmLivermorePhysics.hh"
 #include "G4EmPenelopePhysics.hh"
 #include "G4EmDNAPhysics.hh"
+#include "G4EmLowEPPhysics.hh"
 #include "G4LossTableManager.hh"
 #include "G4UAtomicDeexcitation.hh"
 
@@ -299,6 +301,9 @@ void GatePhysicsList::ConstructPhysicsList(G4String name)
   if (mUserPhysicListName == "emstandard_opt3") {
     pl = new G4EmStandardPhysics_option3();
   }
+  if (mUserPhysicListName == "emstandard_opt4") {
+    pl = new G4EmStandardPhysics_option4();
+  }
   if (mUserPhysicListName == "emlivermore") {
     pl = new G4EmLivermorePhysics();
   }
@@ -310,6 +315,9 @@ void GatePhysicsList::ConstructPhysicsList(G4String name)
   }
   if (mUserPhysicListName == "emDNAphysics") {
     pl = new G4EmDNAPhysics();
+  }
+  if (mUserPhysicListName == "emLowEPPhysics") {
+    pl = new G4EmLowEPPhysics();
   }
   if (mUserPhysicListName == "optical") {
     pl = new G4OpticalPhysics();
