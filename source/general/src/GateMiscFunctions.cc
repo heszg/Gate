@@ -80,9 +80,9 @@ void setExtension(std::string & filename, const std::string& extension) {
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-void OpenFileInput(G4String filename, std::ifstream & is) 
+void OpenFileInput(G4String filename, std::ifstream & is, std::ios_base::openmode mode ) 
 {
-  is.open(filename.data());
+  is.open(filename.data(), mode);
   if (!is) {
     GateError("Error while opening " << filename 
 	      << " for reading.");
@@ -91,9 +91,9 @@ void OpenFileInput(G4String filename, std::ifstream & is)
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
-void OpenFileOutput(G4String filename, std::ofstream & os) 
+void OpenFileOutput(G4String filename, std::ofstream & os, std::ios_base::openmode mode) 
 {
-  os.open(filename.data());
+  os.open(filename.data(), mode);
   if (!os) {
     GateError("Error while opening " << filename 
 	      << " for writing.");

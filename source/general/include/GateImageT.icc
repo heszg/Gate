@@ -96,7 +96,7 @@ void GateImageT<PixelType>::ReadAnalyze(G4String filename) {
   int l = filename.length();
   filename.replace(l-3,3,"img");
   std::ifstream is;
-  OpenFileInput(filename, is);
+  OpenFileInput(filename, is, std::ios_base::binary);
 
   // Read values ...
   if (hdr.GetVoxelType() == GateAnalyzeHeader::SignedShortType) {
