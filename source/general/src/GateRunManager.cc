@@ -154,6 +154,11 @@ void GateRunManager::InitGeometryOnly()
   GateDebugMessageInc("Core", 0, "Initialisation of G4Regions\n");
   G4RegionStore * RegionStore = G4RegionStore::GetInstance();
   // RegionStore->Clean();
+  /*
+
+  // Erasing an iterator in the loop is dangerous (and not working properly).
+  // RegionStore->DeRegister should take the iterator and return one on update (as std::vector::erase does).
+
   G4RegionStore::const_iterator pi = RegionStore->begin();
   while (pi != RegionStore->end()) {
     //G4bool unique;
@@ -165,6 +170,18 @@ void GateRunManager::InitGeometryOnly()
     }
     else  ++pi;
   }
+  */
+
+  for (size_t i=RegionStore->size(); i > 0; ) {
+	--i;
+    G4String regionName = RegionStore->at(i)->GetName();
+
+    if(regionName!="DefaultRegionForTheWorld") {
+      RegionStore->DeRegister( RegionStore->at(i) );
+      GateMessage("Cuts", 5, "Region "<<regionName<<" deleted."<< Gateendl);
+    }
+  }
+
   GateMessageDec("Cuts", 5, "G4Regions Initialized!\n");
 
   // Initialise the geometry in the main() programm
