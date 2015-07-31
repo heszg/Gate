@@ -28,6 +28,7 @@
 #include "GateVisManager.hh"
 #include "G4VVisManager.hh"
 #include "G4Circle.hh"
+#include "G4Point3DList.hh"
 #include "G4VisAttributes.hh"
 // Setup a static color table for source visualization
 
@@ -141,11 +142,13 @@ void GateVSource::Visualize(G4String parmString){
   if (!visman) return;
 
   if (iCount <=0 || iCount > 10000) {
-     G4cout << "Invalid count; 2000 used.\n";
+	 iCount = 2000;
+     G4cout << "Invalid count; " << iCount << " used.\n";
   }
 
   if(fSize <=0 || fSize > 20) {
-    G4cout << "Invalid size; 3.0 used.\n";
+	  fSize = 3.0;
+	  G4cout << "Invalid size; " << fSize << " used.\n";
   }
 
   GateColorMap::iterator colorMapIt = theColorMap.find(sColor);
@@ -163,15 +166,20 @@ void GateVSource::Visualize(G4String parmString){
 
   for (int k=0; k<iCount; ++k){
 
-    //m_sps->GeneratePositionStuff();
+	  G4Event event;
+	  // generate primaries and mark their location
+	  // this way volume sources will be visualized as well 
+	  G4int num = GeneratePrimaries( &event );
 
-	//Fix to update source visualization when it is attached to a volume
-	//M Chamberland, 20/09/2013
-	G4ThreeVector position = m_posSPS->GenerateOne();
-	ChangeParticlePositionRelativeToAttachedVolume(position);
-	circle.SetPosition(position);
+	  for (int i=0; i < num; ++i)
+	  {
+	    G4ThreeVector position = event.GetPrimaryVertex(i)->GetPosition();
 
-	visman->Draw(circle);
+		ChangeParticlePositionRelativeToAttachedVolume(position);
+		circle.SetPosition(position);
+
+		visman->Draw(circle);
+	  }
   }
 
 #endif
