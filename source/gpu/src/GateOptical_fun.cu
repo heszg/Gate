@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include <math.h>
 #include <float.h>
+
+#ifdef _MSC_BUILD
+#	include <time.h>
+#	include "gettimeofday.h"
+#else
+#	include <sys/time.h>
+#endif
 
 // vesna - for ROOT output
 #include <TROOT.h>

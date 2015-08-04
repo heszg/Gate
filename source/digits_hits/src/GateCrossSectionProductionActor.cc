@@ -18,7 +18,14 @@
 #include "GateCrossSectionProductionActor.hh"
 #include "GateMiscFunctions.hh"
 #include "G4PhysicalConstants.hh"
-#include <sys/time.h>
+
+#ifdef _MSC_BUILD
+#	include <time.h>
+#	include "msgettimeofday.h"
+#else
+#	include <sys/time.h>
+#endif
+
 //-----------------------------------------------------------------------------
 GateCrossSectionProductionActor::GateCrossSectionProductionActor(G4String name, G4int depth):
   GateVImageActor(name,depth) {

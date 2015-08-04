@@ -20,6 +20,10 @@
 #include "GateApplicationMgr.hh"
 #include "G4Event.hh"
 
+#ifdef _MSC_BUILD
+#include "msgettimeofday.h"
+#endif
+
 double get_elapsed_time(const timeval &start, const timeval &end) {
   double elapsed = 0;
   elapsed += end.tv_sec + 1e-6*end.tv_usec;

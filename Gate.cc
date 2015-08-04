@@ -13,7 +13,11 @@
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 
-#include <getopt.h>
+#ifdef _MSC_VER
+#	include "msgetopt.h"
+#else
+#	include <getopt.h>
+#endif
 #include <cstdlib>
 #include <queue>
 #include <locale.h>

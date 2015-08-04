@@ -6,7 +6,7 @@
    See GATE/LICENSE.txt for further details
 ----------------------*/
 #include <cmath>
-#include "pthread.h"
+#include <pthread.h>
 #include <vector>
 #include "GateConfiguration.h"
 #include "G4VProcess.hh"
@@ -22,13 +22,19 @@
 #include "GateVSystem.hh"
 #include "GateToGPUImageSPECT.hh"
 #include "GateToGPUImageSPECTMessenger.hh"
+#include "GateMiscFunctions.hh"
 #include "G4VUserTrackInformation.hh"
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 #include <cstddef>
-#include <sys/time.h>
-#include "GateMiscFunctions.hh"
+#ifdef _MSC_BUILD
+#	include <time.h>
+#	include "msgettimeofday.h"
+#else
+#	include <sys/time.h>
+#endif
 
+#define PI ( 4 * ::atan( 1 ) )
 
 GateToGPUImageSPECT::GateToGPUImageSPECT( const G4String& name,
     GateOutputMgr *outputMgr, GateVSystem* itsSystem, DigiMode digiMode )
@@ -200,6 +206,7 @@ static void* cpuSPECT( void *args )
 
 	delete[] particleThread;
 	pthread_exit( NULL );
+	return NULL;
 }
 
 void GateToGPUImageSPECT::SetRootHitFlag( G4bool flag )

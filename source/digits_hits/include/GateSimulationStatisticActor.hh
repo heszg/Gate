@@ -20,7 +20,11 @@ See GATE/LICENSE.txt for further details
 #include "GateActorManager.hh"
 #include "GateActorMessenger.hh"
 
+#ifdef _MSC_BUILD
+#include <time.h>
+#else
 #include <sys/time.h>
+#endif
 
 //-----------------------------------------------------------------------------
 /// \brief Actor displaying nb events/tracks/step

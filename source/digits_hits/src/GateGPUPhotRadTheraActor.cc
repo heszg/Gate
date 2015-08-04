@@ -19,7 +19,11 @@
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 
+#ifdef _MSC_BUILD
+#include <time.h>
+#else
 #include <sys/time.h>
+#endif
 
 //-----------------------------------------------------------------------------
 GateGPUPhotRadTheraActor::GateGPUPhotRadTheraActor(G4String name, G4int depth):

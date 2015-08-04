@@ -14,9 +14,16 @@
 #include "GateActorManager.hh"
 #include "GateMiscFunctions.hh"
 
-#include <sys/time.h>
 #include <stdio.h>
-#include <unistd.h>
+
+#ifdef _MSC_BUILD
+#	include <time.h>
+#	include <msunistd.h>
+#	include "msgettimeofday.h"
+#else
+#	include <sys/time.h>
+#	include <unistd.h>
+#endif
 
 //-----------------------------------------------------------------------------
 GateVActor::GateVActor(G4String name, G4int depth)

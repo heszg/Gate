@@ -383,7 +383,7 @@ void GateMaterialMuHandler::SimulateMaterialTable()
 	// find the physical models according to the gamma energy
 	for(int i=0; i<processListForGamma->size(); i++)
 	{
-	  long unsigned int physicRegionNumber = 0;
+	  size_t physicRegionNumber = 0;
 	  G4String processName = (*processListForGamma)[i]->GetProcessName();
 	  if(processName == "PhotoElectric" || processName == "phot") {
 	    modelPE = (dynamic_cast<G4VEmProcess *>((*processListForGamma)[i]))->SelectModelForMaterial(incidentEnergy, physicRegionNumber);

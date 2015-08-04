@@ -25,6 +25,8 @@
 #include "GatePhantomSD.hh"
 #include "GateDetectorConstruction.hh"
 
+#include "compat.h"
+
 //-----------------------------------------------------------------------------
 /// Constructor with :
 /// the path to the volume to create (for commands)
