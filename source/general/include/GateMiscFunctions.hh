@@ -51,10 +51,10 @@ std::string removeExtension(const std::string & filename);
 void setExtension(std::string & filename, const std::string& extension);
 
 //-----------------------------------------------------------------------------
-void OpenFileInput(G4String filename, std::ifstream & is);
+void OpenFileInput(G4String filename, std::ifstream & is, std::ios_base::openmode mode = std::ios_base::in);
 
 //-----------------------------------------------------------------------------
-void OpenFileOutput(G4String filename, std::ofstream & os);
+void OpenFileOutput(G4String filename, std::ofstream & os, std::ios_base::openmode mode = std::ios_base::out);
 
 //-----------------------------------------------------------------------------
 G4String DoubletoString(G4double a);

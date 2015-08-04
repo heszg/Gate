@@ -67,7 +67,7 @@ template <class ReadPixelType, class OutputPixelType>
 void GateInterfileHeader::DoDataRead(std::vector<OutputPixelType> &data) {
   G4int pixelNumber = m_dim[0]*m_dim[1]*m_numPlanes ;
   std::ifstream is;
-  OpenFileInput(m_dataFileName, is);
+  OpenFileInput(m_dataFileName, is, std::ios_base::binary);
   std::vector<ReadPixelType> temp(pixelNumber);
 
   data.resize(pixelNumber);
