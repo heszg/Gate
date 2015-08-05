@@ -51,9 +51,28 @@ void GateInterfileHeader::ReadHeader(G4String headerFileName)
 	  // guess filename
 	  m_dataFileName = headerFileName.replace(headerFileName.length()-3, 3, "i33");
   }
+  
+  // check if data file exists, if not try the header's directory 
+  FILE* tmp = fopen(m_dataFileName.c_str(),"r");
+  if (NULL == tmp)
+  {
+	  G4String::size_type p = m_headerFileName.find_last_of( "\\/" );
+	  if (G4String::npos != p)
+	  {
+		  G4String fn = m_headerFileName.substr(0, p+1) + m_dataFileName;
+		  FILE* tmp = fopen(fn.c_str(),"r");
+		  if (NULL != tmp)
+		  {
+			  fclose(tmp);
+			  m_dataFileName = fn;
+		  }
+	  }
+  }
 
   for (G4int i=0; i<2; i++)
+  {
     m_matrixSize[i] = m_dim[i] * m_pixelSize[i];
+  }
 
   G4cout << " Header read from       '" << m_headerFileName << "'\n";
   G4cout << " Data file name         '" << m_dataFileName << "'\n";
