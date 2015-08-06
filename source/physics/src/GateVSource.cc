@@ -174,8 +174,6 @@ void GateVSource::Visualize(G4String parmString){
 	  for (int i=0; i < num; ++i)
 	  {
 	    G4ThreeVector position = event.GetPrimaryVertex(i)->GetPosition();
-
-		ChangeParticlePositionRelativeToAttachedVolume(position);
 		circle.SetPosition(position);
 
 		visman->Draw(circle);
