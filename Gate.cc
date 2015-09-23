@@ -195,6 +195,7 @@ int main( int argc, char* argv[] )
   // analyzing arguments
   static G4int isDigiMode = 0; // DigiMode false by default
   static G4int isQt = 0; // Enable Qt or not
+  static G4int noCrashReport = 0; // don't disable windows crash report popup
   G4String listOfParameters = ""; // List of parameters for parameterized macro
   DigiMode aDigiMode = kruntimeMode;
 
@@ -210,7 +211,8 @@ int main( int argc, char* argv[] )
         { "version", no_argument, 0, 'v' },
         { "d", no_argument, &isDigiMode, 1 },
         { "qt", no_argument, &isQt, 1 },
-        { "param", required_argument, 0, 'a' }
+        { "param", required_argument, 0, 'a' },
+        { "nocrashreport", no_argument, &noCrashReport, 1 }
       };
 
 #ifdef __APPLE__
@@ -355,6 +357,13 @@ int main( int argc, char* argv[] )
       session = new G4UIterminal();
 #endif
     }
+  if (noCrashReport)
+  {
+#if _MSC_VER
+	DWORD dwMode = SetErrorMode(SEM_NOGPFAULTERRORBOX);
+	SetErrorMode(dwMode | SEM_NOGPFAULTERRORBOX);
+#endif
+  }
 
   // Macro file parameters
   G4int isMacroFile = 0;
