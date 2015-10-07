@@ -70,17 +70,27 @@ GateDetectorConstruction::GateDetectorConstruction()
   //-------------------------------------------------------------------------
   // Create default material (air) for the world
   G4String AirName = "worldDefaultAir";
+#ifdef VACUUM
+  G4cout << "!!! Warning: using self-defined Vacuum material for World!\n";
+  G4Element* H  = new G4Element("worldDefaultH","H" , 1., 1.01*g/mole );
+  G4Material* Air = new G4Material(AirName  , 0.000001*mg/cm3, 1);
+  Air->AddElement(H, 1.0);
+#else
   G4Material* Air = G4NistManager::Instance()->FindOrBuildMaterial("Air"); // Use Air for NIST Manager
   if (Air==NULL)//will never enter here
   {
+	  G4cout << "!!! Warning: using self-defined Air material for World!\n";
    	  G4Element* N  = new G4Element("worldDefaultN","N" , 7., 14.01*g/mole );
   	  G4Element* O  = new G4Element("worldDefaultO","O" , 8., 16.00*g/mole);
    	  G4Material* Air = new G4Material(AirName  , 1.290*mg/cm3, 2);
    	  Air->AddElement(N, 0.7);
    	  Air->AddElement(O, 0.3);
   }
-  else Air->SetName(AirName);//For compatibility put name of this Air material to "worldDefaultAir"
-
+  else 
+  {
+	  Air->SetName(AirName);//For compatibility put name of this Air material to "worldDefaultAir"
+  }
+#endif
   //-------------------------------------------------------------------------
 
   pworld = new GateBox("world", "worldDefaultAir",  pworld_x, pworld_y, pworld_z, true);
