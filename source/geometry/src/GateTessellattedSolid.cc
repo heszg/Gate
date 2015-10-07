@@ -117,7 +117,7 @@ G4LogicalVolume* GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume(G4Mater
 		//
 		// Check the geometry
 		// For each edge we should have exactly 2 facets with opposite orientation to get a closed surface 
-		// !TODO! unless there are vertices in the middle of edges
+		// !TODO! unless there are vertices in the middle of edges (G4 doesn't like it either)
 		// !TODO! check if the normal vector points inside 
 		// !TODO! check if the geometry is intersecting itself
 		bool geomcheck = true;
@@ -141,10 +141,12 @@ G4LogicalVolume* GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume(G4Mater
 				}
 			}
 
-			for (G4ThreeVectorList::size_type w=0; w < m_vertices.size(); w++) {
+			for (G4ThreeVectorList::size_type w=0; w < v; w++) {
 				if (connections0[w] != connections1[w] || connections0[w] > 1) {
 					geomcheck = false;
-					G4cerr << "Geometry check failed on edge #" << v << "-#" << w << "." << G4endl;
+					G4cerr << "Geometry check failed on edge " << v << "--" << w << "   " <<
+						connections0[w] << " == " << connections1[w] << "    " <<
+						m_vertices[v] << ", " << m_vertices[w] << G4endl;
 				}
 			}
 			if (!used)
@@ -155,7 +157,9 @@ G4LogicalVolume* GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume(G4Mater
 		}
 		if (!geomcheck)
 		{
-			G4Exception("GateTessellatedSolid", "Invalid solid geometry", FatalErrorInArgument, "Invalid solid geometry");
+			G4cerr << "Geometry check failed for solid: " << GetSolidName() << G4endl;
+			//G4Exception("GateTessellatedSolid", "Invalid solid geometry", FatalErrorInArgument, 
+			//	(G4String("Invalid solid geometry: ")+GetSolidName()).c_str());
 		}
 		
 		for (GateFacetVerticesList::size_type i=0; i < m_facets.size(); i++) {
@@ -184,8 +188,11 @@ G4LogicalVolume* GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume(G4Mater
 	}
 	else {
      // Update mode: refresh the dimensions of the solid
-       GateMessage("Warning", 0, "GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume update mode not implemented"<<G4endl);
-       GateMessage("Warning", 0, "GateTessellatedSolid::Material = "<< mMaterialName <<G4endl);
+		static bool updateWarning = true;
+		if (updateWarning) {
+			GateMessage("Warning", 0, "GateTessellatedSolid::ConstructOwnSolidAndLogicalVolume update mode not implemented"<<G4endl);
+			updateWarning = false;
+		}
 	}
 	return m_TessellatedSolid_log;
 }
