@@ -27,7 +27,7 @@ class GateBox : public GateVVolume
 {
 
 public : 
-   GateBox(const G4String& itsName,
+  GateBox(const G4String& itsName,
 		 G4bool acceptsChildren=true, 
 		 G4int depth=0); 
   // Constructor

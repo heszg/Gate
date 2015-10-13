@@ -10,14 +10,13 @@ See GATE/LICENSE.txt for further details
 #include "GateBoxReplicaPlacement.hh"
 
 #include "GateBox.hh"
-#include "GateParallelBeam.hh"
 
-GateBoxReplicaPlacement::GateBoxReplicaPlacement(GateParallelBeam* itsParallelBeamInserter,
+GateBoxReplicaPlacement::GateBoxReplicaPlacement(GateBox* itsCollimatorInserter,
 					       const G4String& itsName,const G4String& itsMaterialName,
 					       G4double itsLength,G4double itsWidth,G4double itsHeight,
 			      		       G4double itsDelta,EAxis itsAxis,G4int itsReplicaNb)
   : GateBox(itsName,itsMaterialName,itsLength,itsWidth,itsHeight,false,false),
-    m_ParallelBeamInserter(itsParallelBeamInserter),
+    m_CollimatorInserter(itsCollimatorInserter),
     m_Delta(itsDelta),m_Length(itsLength),m_Height(itsHeight),
     m_Width(itsWidth),m_Axis(itsAxis),m_ReplicaNb(itsReplicaNb),m_Replica(0)
 {

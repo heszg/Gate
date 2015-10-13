@@ -23,7 +23,7 @@ class GateBoxReplicaPlacement : public GateBox
 {
   public:
 
-     GateBoxReplicaPlacement(GateParallelBeam* itsParallelBeamInserter,
+     GateBoxReplicaPlacement(GateBox* itsCollimatorInserter,
       	      	      	      const G4String& itsName,const G4String& itsMaterialName,
       	      	      	      G4double itsLength,G4double itsWidth,G4double itsHeight,
 			      G4double itsDelta,EAxis itsAxis,G4int itsReplicaNb);
@@ -40,7 +40,7 @@ class GateBoxReplicaPlacement : public GateBox
       { return (GateBox*) GetCreator(); }
 
   protected:
-    GateParallelBeam *m_ParallelBeamInserter;
+    GateBox          *m_CollimatorInserter;
 
     G4String	      m_materialName;
     G4double  	      m_Delta,m_Length,m_Height,m_Width;
