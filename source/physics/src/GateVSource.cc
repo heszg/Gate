@@ -85,8 +85,8 @@ GateVSource::GateVSource(G4String name): m_name( name ) {
   mIsUserFocalShapeActive = false;
   mUserFocalShapeInitialisation = false;
   mUserFocalShape = new G4SPSPosDistribution();
+  mUserPosGenX = 0;
 
-  mUserPosGenX = new G4SPSRandomGenerator();
   m_posSPS = new GateSPSPosDistribution();
   m_posSPS->SetBiasRndm( GetBiasRndm() );
   m_eneSPS = new GateSPSEneDistribution();
@@ -98,8 +98,8 @@ GateVSource::GateVSource(G4String name): m_name( name ) {
   m_sourceMessenger = new GateVSourceMessenger( this );
   m_SPSMessenger    = new GateSingleParticleSourceMessenger( this );
 
-
   SetNumberOfParticles(1); // important !
+
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -107,21 +107,22 @@ GateVSource::GateVSource(G4String name): m_name( name ) {
 //-------------------------------------------------------------------------------------------------
 GateVSource::~GateVSource()
 {
-  /*delete posGenerator;
-    delete angGenerator;
-    delete eneGenerator;
-    delete biasRndm;*/
-
   delete m_sourceMessenger;
   delete m_SPSMessenger;
+
   delete m_posSPS;
   delete m_eneSPS;
   delete m_angSPS;
+
   delete mUserFocalShape;
-  delete mUserPosGenX;
-  for (unsigned int i = 0; i<mUserPosGenY.size(); ++i) {
-    delete mUserPosGenY[i];
+  if(mUserPosGenX != 0)
+    delete mUserPosGenX;
+  for (unsigned int i = 0; i<mUserPosGenY.size(); ++i)
+  {
+    if(mUserPosGenY[i] != 0)
+      delete mUserPosGenY[i];
   }
+
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -894,6 +895,8 @@ void GateVSource::InitializeUserFluence()
     posX = (0.5 * sizeX) + userFluenceImage.GetOrigin().x();
 //     posX = ((0.5 * sizeX) - userFluenceImage.GetHalfSize().x());
 
+    mUserPosGenX = new G4SPSRandomGenerator();
+
     mUserPosGenX->SetXBias(G4ThreeVector(0.,0.,0.));
     for(int i=0; i<resX;i++)
     {
@@ -905,16 +908,16 @@ void GateVSource::InitializeUserFluence()
 
       if (mUserPosGenY[i]==0) {
         mUserPosGenY[i] = new G4SPSRandomGenerator();
+        mUserPosGenY[i]->SetYBias(G4ThreeVector(0.,0.,0.));
+        mUserPosGenY[i]->GetBiasWeight();       // these two lines are kludges to initialize
+        mUserPosGenY[i]->ReSetHist("biaspp");   // all the G4Cache objects in G4SPSRandomGenerator
       }
-      mUserPosGenY[i]->SetYBias(G4ThreeVector(0.,0.,0.));
+
       for(int j=0; j<resY; j++)
       {
         sum += userFluenceImage.GetValue(i,j,0);
         mUserPosY[j] = posY;
 
-        if (mUserPosGenY[i]==0) {
-          mUserPosGenY[i] = new G4SPSRandomGenerator();
-        }
         mUserPosGenY[i]->SetYBias(G4ThreeVector(j+1,userFluenceImage.GetValue(i,j,0),0.));
         posY += sizeY;
       }
