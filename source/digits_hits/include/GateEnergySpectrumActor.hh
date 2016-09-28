@@ -1,10 +1,10 @@
 /*----------------------
-   Copyright (C): OpenGATE Collaboration
+  Copyright (C): OpenGATE Collaboration
 
-This software is distributed under the terms
-of the GNU Lesser General  Public Licence (LGPL)
-See GATE/LICENSE.txt for further details
-----------------------*/
+  This software is distributed under the terms
+  of the GNU Lesser General  Public Licence (LGPL)
+  See GATE/LICENSE.txt for further details
+  ----------------------*/
 
 #include "GateConfiguration.h"
 #ifdef G4ANALYSIS_USE_ROOT
@@ -12,27 +12,29 @@ See GATE/LICENSE.txt for further details
 /*!
   \class  GateEnergySpectrumActor
   \author thibault.frisson@creatis.insa-lyon.fr
-          laurent.guigues@creatis.insa-lyon.fr
-	  david.sarrut@creatis.insa-lyon.fr
-	  pierre.gueth@creatis.insa-lyon.fr
- */
+  laurent.guigues@creatis.insa-lyon.fr
+  david.sarrut@creatis.insa-lyon.fr
+  pierre.gueth@creatis.insa-lyon.fr
+*/
 
 #ifndef GATEENERGYSPECTRUMACTOR_HH
 #define GATEENERGYSPECTRUMACTOR_HH
 
 #include "GateVActor.hh"
 #include "GateActorMessenger.hh"
+#include "GateDiscreteSpectrum.hh"
 
 #include <TROOT.h>
 #include <TFile.h>
 #include <TH1.h>
 #include <TH2.h>
 
+class G4EmCalculator;
 //-----------------------------------------------------------------------------
 /// \brief Actor displaying nb events/tracks/step
 class GateEnergySpectrumActor : public GateVActor
 {
- public:
+public:
 
   virtual ~GateEnergySpectrumActor();
 
@@ -54,18 +56,25 @@ class GateEnergySpectrumActor : public GateVActor
   virtual void PreUserTrackingAction(const GateVVolume *, const G4Track*) ;
   virtual void PostUserTrackingAction(const GateVVolume *, const G4Track*) ;
   virtual void EndOfEventAction(const G4Event*);
+
   //-----------------------------------------------------------------------------
   /// Saves the data collected to the file
   virtual void SaveData();
   virtual void ResetData();
 
-//  virtual G4bool ProcessHits(G4Step *, G4TouchableHistory*);
   virtual void Initialize(G4HCofThisEvent*){}
   virtual void EndOfEvent(G4HCofThisEvent*){}
 
   double GetEmin() {return mEmin; }
   double GetEmax() {return mEmax;}
   int GetENBins() {return mENBins;}
+  
+  G4double GetLETmin() {return mLETmin; }
+  G4double GetLETmax() {return mLETmax; }
+  int GetNLETBins() {return mLETBins; }
+  void SetLETmin(double v) {mLETmin = v;}
+  void SetLETmax(double v) {mLETmax = v;}
+  void SetNLETBins(double v) {mLETBins = v;}
 
   void SetEmin(double v) {mEmin = v;}
   void SetEmax(double v) {mEmax = v;}
@@ -78,7 +87,9 @@ class GateEnergySpectrumActor : public GateVActor
   void SetEdepmin(double v) {mEdepmin = v;}
   void SetEdepmax(double v) {mEdepmax = v;}
   void SetEdepNBins(int v) {mEdepNBins = v;}
-
+  void SetLETSpectrumCalc(bool b) {mEnableLETSpectrumFlag = b; }
+  void SetSaveAsTextFlag(bool b) { mSaveAsTextFlag = b; }
+  void SetSaveAsTextDiscreteEnergySpectrumFlag(bool b) { mSaveAsDiscreteSpectrumTextFlag = b; if (b) SetSaveAsTextFlag(b); }
 
 protected:
   GateEnergySpectrumActor(G4String name, G4int depth=0);
@@ -92,6 +103,11 @@ protected:
   TH2D * pEdepTime;
   TH1D * pEdepTrack;
 
+  TH1D * pLETSpectrum;
+  G4double mLETmin;
+  G4double mLETmax;
+  int mLETBins;
+  
   double mEmin;
   double mEmax;
   int mENBins;
@@ -102,6 +118,7 @@ protected:
 
   double Ei,Ef;
   int nTrack;
+  int nEvent;
   bool newEvt;
   bool newTrack;
   double sumNi;
@@ -114,6 +131,15 @@ protected:
   double edepTrack;
 
   GateActorMessenger* pMessenger;
+
+
+  GateDiscreteSpectrum mDiscreteSpectrum;
+  void SaveAsText(TH1D * histo, G4String initial_filename);
+  bool mSaveAsTextFlag;
+  bool mSaveAsDiscreteSpectrumTextFlag;
+  bool mEnableLETSpectrumFlag;
+  
+  G4EmCalculator * emcalc;
 };
 
 MAKE_AUTO_CREATOR_ACTOR(EnergySpectrumActor,GateEnergySpectrumActor)

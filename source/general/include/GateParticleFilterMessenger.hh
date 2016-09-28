@@ -22,6 +22,7 @@ See GATE/LICENSE.txt for further details
 
 #include "G4UIcmdWithAString.hh"
 
+#include "G4UIcmdWithAnInteger.hh"
 
 class GateParticleFilter;
 
@@ -38,7 +39,9 @@ protected:
   GateParticleFilter * pParticleFilter;
 
   G4UIcmdWithAString* pAddParticleCmd;
+  G4UIcmdWithAnInteger* pAddParticleZCmd;
   G4UIcmdWithAString* pAddParentParticleCmd;
+  G4UIcmdWithAString* pAddDirectParentParticleCmd;
 };
 
 #endif /* end #define GATEPARTFILTERMESSENGER_HH */

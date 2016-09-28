@@ -35,7 +35,7 @@ public:
   GateVSource( G4String name );
   virtual ~GateVSource();
 
-  virtual  void Initialize(){}
+  virtual  void Initialize();
 
   virtual void SetName( G4String value ) { m_name = value; }
   virtual G4String GetName()             { return m_name; }
@@ -92,6 +92,10 @@ public:
   virtual GateSPSPosDistribution* GetPosDist() { return m_posSPS ; }
   virtual GateSPSEneDistribution* GetEneDist() { return m_eneSPS ; }
   virtual GateSPSAngDistribution* GetAngDist() { return m_angSPS ; }
+
+  virtual G4ThreeVector getRotX() { return mRotX ; }
+  virtual G4ThreeVector getRotY() { return mRotY ; }
+  virtual G4ThreeVector getRotZ() { return mRotZ ; }
 
   G4String GetRelativePlacementVolume();
   void SetRelativePlacementVolume(G4String volname);

@@ -398,9 +398,9 @@ void GatePhysicsList::ConstructParticle()
 
   //  Construct  resonaces and quarks
   G4ShortLivedConstructor slive;
-  slive.ConstructParticle(); 
-  
-  //  Construct hybridino 
+  slive.ConstructParticle();
+
+  //  Construct hybridino
   G4Hybridino::HybridinoDefinition();
 
 
@@ -418,7 +418,7 @@ void GatePhysicsList::ConstructParticle()
   dnagenericIonsManager->GetIon("nitrogen");
   dnagenericIonsManager->GetIon("iron");
   dnagenericIonsManager->GetIon("oxygen");
-  
+
 }
 //-----------------------------------------------------------------------------------------
 
