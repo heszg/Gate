@@ -132,19 +132,19 @@ void GateEmCalculatorActor::SaveData()
       os << "# And for the following materials\n";
 // labels
       os << "Material\t";
-      os << "Density\t\t";
+      os << "Density\t";
       os << "e-density\t";
       os << "RadLength\t";
       os << "I\t";
-      os << "EM-DEDX\t\t";
+      os << "EM-DEDX\t";
       os << "Nucl-DEDX\t";
       os << "Tot-DEDX\t";
       os << "Mu_mass\n";
 // units
-      os << "\t\t";
-      os << "(g/cm³)\t\t";
+      os << "\t";
+      os << "(g/cm³)\t";
       os << "(e-/mm³)\t";
-      os << "(mm)\t\t";
+      os << "(mm)\t";
       os << "(eV)\t";
       os << "(MeV.cm²/g)\t";
       os << "(MeV.cm²/g)\t";
@@ -174,14 +174,14 @@ void GateEmCalculatorActor::SaveData()
 // Currently all 3 initialization methods are called together, making difficult the use of GetMethods of G4EmCalculator.
 
 // values
-      os << material << "\t\t";
-      os << density*e_SI << "\t\t";
+      os << material << "\t";
+      os << density*e_SI << "\t";
       os << eDensity << "\t";
-      os << radLength << "\t\t";
+      os << radLength << "\t";
       os << I*1.e6 << "\t";
-      os << EmDEDX*10./(e_SI*density) << "\t\t";
+      os << EmDEDX*10./(e_SI*density) << "\t";
       os << NuclearDEDX*10./(e_SI*density) << "\t";
-      os << TotalDEDX*10./(e_SI*density) << "\t\t";
+      os << TotalDEDX*10./(e_SI*density) << "\t";
       os << MuMassCoeficient << Gateendl;
     }
 
