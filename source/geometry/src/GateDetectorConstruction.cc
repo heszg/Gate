@@ -312,17 +312,19 @@ void GateDetectorConstruction::ClockHasChanged()
   GateMessage("Move", 6, "Clock has changed.\n");
 }
 //---------------------------------------------------------------------------------
-/*PY Descourt 08/09/2008 */
+
+
+//---------------------------------------------------------------------------------
 void GateDetectorConstruction::insertARFSD( G4String aName , G4int stage )
 {
-  G4cout << " GateDetectorConstruction::insertARFSD  entered \n";
+  GateMessage("Geometry", 2, "GateDetectorConstruction::insertARFSD entered");
 
-  if ( m_ARFSD == 0 )
-    {
-      m_ARFSD = new GateARFSD("/gate/arf", aName );
-      G4SDManager* SDMan = G4SDManager::GetSDMpointer();
-      SDMan->AddNewDetector( m_ARFSD );
-    }
+  if (m_ARFSD == 0) {
+    m_ARFSD = new GateARFSD("/gate/arf", aName );
+    G4SDManager* SDMan = G4SDManager::GetSDMpointer();
+    SDMan->AddNewDetector( m_ARFSD );
+  }
   m_ARFSD->SetStage( stage );
 }
-/*PY Descourt 08/09/2008 */
+//---------------------------------------------------------------------------------
+
